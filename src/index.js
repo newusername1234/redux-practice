@@ -37,16 +37,23 @@ function changer(state=defaultState, action) {
     }
     return newState;
 }
+const otherState = {
+    kindOfSandwich: 'fdskljfeij',
+    favSong: 'blahblahblahblahblah'
+};
 
-const store = createStore(changer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(  changer,
+                            otherState,
+                            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+window.store = store;
 
 store.subscribe(() => {
     console.log('the state is now:');
     console.table(store.getState());
 });
 
-store.dispatch(actionChangeSandwich('turkey tom'));
-store.dispatch(actionChangeSong('holiday'));     
+store.dispatch(actionChangeSandwich('blah'));
+store.dispatch(actionChangeSong('durr'));
 
 // import React from 'react';
 // import ReactDOM from 'react-dom';
