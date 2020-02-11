@@ -1,9 +1,9 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
-function actionChangeSong(favSong) {
+function actionChangeDessert(kindOfDessert) {
     return {
-        type: CHANGE_SONG,
-        payload: { favSong }
+        type: CHANGE_DESSERT,
+        payload: { kindOfDessert }
     }
 }
 
@@ -14,37 +14,74 @@ function actionChangeSandwich(kindOfSandwich) {
     }
 }
 
-const CHANGE_SONG = 'CHANGE_SONG';
-const CHANGE_SANDWICH = 'CHANGE_SANDWICH';
-
-
-const defaultState = {
-    kindOfSandwich: 'vito',
-    favSong: 'ocean avenue',
+function actionCoffeeCount() {
+    return {
+        type: INCREMENT_COFFEE_COUNT
+    }
 }
 
-function changer(state=defaultState, action) {
+const CHANGE_DESSERT = 'CHANGE_DESSERT';
+const CHANGE_SANDWICH = 'CHANGE_SANDWICH';
+const INCREMENT_COFFEE_COUNT = 'INCREMENT_COFFEE_COUNT';
+
+
+const defaultDessertState = {
+    kindOfDessert: 'cake'
+};
+
+const defaultLunchState = {
+    kindOfSandwich: 'vito'
+};
+
+const defaultCoffeeState = {
+    coffeeCount: 0
+};
+
+
+function dessert(state=defaultDessertState, action) {
     const newState = { ...state };
     switch(action.type) {
-        case CHANGE_SANDWICH:
-            newState.kindOfSandwich = action.payload.kindOfSandwich;
-            break;
-        case CHANGE_SONG:
-            newState.favSong = action.payload.favSong;
+        case CHANGE_DESSERT:
+            newState.kindOfDessert = action.payload.kindOfDessert;
             break;
         default:
             break;
     }
     return newState;
 }
-const otherState = {
-    kindOfSandwich: 'fdskljfeij',
-    favSong: 'blahblahblahblahblah'
-};
 
-const store = createStore(  changer,
-                            otherState,
-                            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+function sandwich(state=defaultLunchState, action) {
+    const newState = { ...state };
+    switch(action.type) {
+        case CHANGE_SANDWICH:
+            newState.kindOfSandwich = action.payload.kindOfSandwich;
+            break;
+        default:
+            break;
+    }
+    return newState;
+}
+
+function coffee(state=defaultCoffeeState, action) {
+    const newState = { ...state };
+    switch(action.type) {
+        case INCREMENT_COFFEE_COUNT:
+            newState.coffeeCount = state.coffeeCount + 1;
+            break;
+        default:
+            break;
+    }
+    return newState;
+}
+
+const rootReducer = combineReducers({
+    // part of tree: reducer function
+    sandwich,
+    dessert,
+    coffee
+});
+
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 window.store = store;
 
 store.subscribe(() => {
@@ -53,7 +90,9 @@ store.subscribe(() => {
 });
 
 store.dispatch(actionChangeSandwich('blah'));
-store.dispatch(actionChangeSong('durr'));
+store.dispatch(actionChangeDessert('blurr'));
+store.dispatch(actionCoffeeCount());
+store.dispatch(actionCoffeeCount());
 
 // import React from 'react';
 // import ReactDOM from 'react-dom';
